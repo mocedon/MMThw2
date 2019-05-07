@@ -4,4 +4,10 @@
 
 typedef enum { FAILURE, SUCCESS } Result;
 
+typedef struct _Node {
+	void* data;
+	struct _Node* next;
+} node;
+
+
 #endif
