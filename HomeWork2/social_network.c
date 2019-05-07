@@ -3,6 +3,21 @@
 
 Result addToNetwork(node* network, char* new_user, char* inviter)
 {
+	if (searchUser(network, new_user)!=NULL)
+	{
+		return FAILURE;
+	}
+	user* u = createUser(new_user);
+	if (u == NULL)
+	{
+		return FAILURE;
+	}
+	//needs to add user to list
+	if (inviter != NULL && addRelationship(network, new_user, inviter) == FAILURE)
+	{
+		deleteUser(u);
+		return FAILURE;
+	}
 
 }
 
@@ -19,10 +34,10 @@ Result removeRelationship(node* network, char* user1, char* user2)
 user* searchUser(node* network, char* username)
 {
 	user* curr_user;
-	while (network)
+	for (node* u = network; u != NULL; u = u->next)
 	{
-		curr_user = (user*)network->data;
-		if (strcmp(username, curr_user->name) == 0)
+		curr_user = (user*)u->data;
+		if (strcmp(username, getName(curr_user)) == 0)
 		{
 			return curr_user;
 		}
