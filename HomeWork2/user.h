@@ -3,7 +3,9 @@
 #ifndef _USER_H
 #define _USER_H
 
+
 #include "def.h"
+
 
 typedef struct _user {
 
@@ -13,13 +15,13 @@ typedef struct _user {
 
 } user;
 
-user* createUser(char* newName);
+user* createUser(char* newName) ;
 
-void deleteUser(user* self);
+void deleteUser(user* self) ;
 
-Result addFriend(user* self , char* add);
+Result addFriend(user* self , char* add) ;
 
-Result removeFriend(user* self, char* remove);
+Result removeFriend(user* self , char* remove) ;
 
 char* getName(user* self);
 
