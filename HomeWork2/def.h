@@ -9,6 +9,4 @@ typedef struct _Node {
 	struct _Node* next;
 } node;
 
-
-
 #endif
