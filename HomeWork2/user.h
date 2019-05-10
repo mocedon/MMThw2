@@ -29,4 +29,6 @@ int getFriendNum(user* self);
 
 void printUser(user* self);
 
+node* pushItem(node* head, void* item);
+
 #endif

@@ -15,17 +15,15 @@ Result addToNetwork(node** network, char* new_user, char* inviter)
 	{
 		return FAILURE;
 	}
-	node* n = (node*)malloc(sizeof(node));
+	node* n = pushItem(*network, u);
 	if (n == nullptr)
 	{
 		deleteUser(u);
 		return FAILURE;
 	}
-	n->data = u;
-	n->next = *network;
-	*network = n;
 	if (inviter == nullptr)
 	{
+		*network = n;
 		return SUCCESS;
 	}
 	user* inv = searchUser(network, inviter);
@@ -35,6 +33,7 @@ Result addToNetwork(node** network, char* new_user, char* inviter)
 		free(n);
 		return FAILURE;
 	}
+	*network = n;
 	addFriend(u, inviter);
 	addFriend(inv, new_user);
 	return SUCCESS;
@@ -106,6 +105,6 @@ void deleteNetwork(node* network)
 	{
 		return;
 	}
-	deleteUser((user*)network->data);
 	deleteNetwork(network->next);
+	deleteUser((user*)network->data);
 }
