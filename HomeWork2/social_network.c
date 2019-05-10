@@ -28,7 +28,16 @@ Result addToNetwork(node** network, char* new_user, char* inviter)
 	{
 		return SUCCESS;
 	}
-
+	user* inv = searchUser(network, inviter);
+	if (inv == nullptr)
+	{
+		deleteUser(u);
+		free(n);
+		return FAILURE;
+	}
+	addFriend(u, inviter);
+	addFriend(inv, new_user);
+	return SUCCESS;
 }
 
 Result addRelationship(node* network, char* user1, char* user2)
@@ -94,5 +103,13 @@ void printNetwork(node* network)
 
 void deleteNetwork(node* network)
 {
-
+	user* curr_user;
+	node* nxt;
+	for (node* u = network; u != nullptr; u = nxt)
+	{
+		curr_user = (user*)u->data;
+		deleteUser(curr_user);
+		nxt = u->next;
+		free(u);
+	}
 }
