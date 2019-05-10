@@ -15,7 +15,7 @@ Result addToNetwork(node** network, char* new_user, char* inviter)
 	{
 		return FAILURE;
 	}
-	node* n = (node*)malloc(sizeof(node*));
+	node* n = (node*)malloc(sizeof(node));
 	if (n == nullptr)
 	{
 		deleteUser(u);
