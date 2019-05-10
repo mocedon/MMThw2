@@ -74,11 +74,9 @@ void printUser(user* self) {
 }
 
 bool nodeDataMatch(node* n1, node* n2) {
-	if (!strcmp((char*)n1->data , (char*)n2->data)) return True ;
+	if (!strcmp((char*)n1->data , (char*)n2->data)) return true ;
 	else return false ;
 }
-
-
 
 void cleanList(node* self) {
 	// Recursively frees up the momery from list
