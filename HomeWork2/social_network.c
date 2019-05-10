@@ -78,38 +78,34 @@ Result removeRelationship(node* network, char* user1, char* user2)
 
 user* searchUser(node* network, char* username)
 {
-	user* curr_user;
-	for (node* u = network; u != nullptr; u = u->next)
+	if(network == nullptr)
 	{
-		curr_user = (user*)u->data;
-		if (strcmp(username, getName(curr_user)) == 0)
-		{
-			return curr_user;
-		}
+		return nullptr;
 	}
-	return nullptr;
+	if (strcmp(username, getName((user*)network->data)) == 0)
+	{
+		return (user*)network->data);
+	}
+	searchUser(network->next);
 }
 
 void printNetwork(node* network)
 {
-	user* curr_user;
-	for (node* u = network; u != nullptr; u = u->next)
+	if (network == nullptr)
 	{
-		curr_user = (user*)u->data;
-		printUser(curr_user);
-		printf("\n");
+		return;
 	}
+	printUser((user*)network->data);
+	printf("\n");
+	printNetwork(network->next);
 }
 
 void deleteNetwork(node* network)
 {
-	user* curr_user;
-	node* nxt;
-	for (node* u = network; u != nullptr; u = nxt)
+	if (network == nullptr)
 	{
-		curr_user = (user*)u->data;
-		deleteUser(curr_user);
-		nxt = u->next;
-		free(u);
+		return;
 	}
+	deleteUser((user*)network->data);
+	deleteNetwork(network->next);
 }
