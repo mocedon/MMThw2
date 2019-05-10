@@ -24,10 +24,8 @@ Result addFriend(user* self, char* add) {
 	for (int i = 0 ; i < self->friend_num ; i++) {
 		if (listItem == nullptr) {
 			node* tmp = self->friend_list ;
-			node* newNode ;
-			newNode = (node*) malloc(sizeof(node)) ;
-			newNode->data = add ;
-			newNode->next = tmp ;
+			node* newNode = pushItem(tmp , add);
+			if (newNode == nullptr) return FAILURE ;
 			self->friend_list = newNode ;
 			self->friend_num++ ;
 			return SUCCESS ;
@@ -42,9 +40,7 @@ Result removeFriend(user* self, char* remove) {
 		if (listItem == nullptr) return FAILURE ;
 		node* nextItem = listItem->next ;
 		if (!strcmp((char*)listItem->data , remove)) {
-			node* tmp = listItem ;
-			listItem = nextItem ;
-			free(tmp) ;
+			removeItem(listItem , nextItem) ;
 			self->friend_num-- ;
 			return SUCCESS ;
 		listItem = nextItem ;
@@ -88,4 +84,18 @@ void cleanList(node* self) {
 	if (self == nullptr) return;
 	cleanList(self->next);
 	free(self);
+}
+
+node* pushItem(node* head , void* data)
+	node* newNode;
+	newNode = (node*)malloc(sizeof(node));
+	if (newNode == nullptr) return nullptr;
+	newNode->data = data;
+	newNode->next = head;
+}
+
+void removeItem(node* curr, node* next) {
+	node* tmp = curr;
+	curr = next;
+	free(tmp);
 }
