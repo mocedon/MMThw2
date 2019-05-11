@@ -6,6 +6,8 @@
 #define MAX_LINE_SIZE 255
 #define CURR_YEAR 2004
 
+
+
 int main() {
 	char szLine[MAX_LINE_SIZE];
 	char* delimiters = " \t\n";

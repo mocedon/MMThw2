@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "def.h"
+#include "defs.h"
 #include "user.h"
 #include "social_network.h"
 
@@ -15,13 +15,16 @@
 #define REM_S "Remove Relationship"
 
 #define PRINT_CMD(x) \
-	do { printf("> " #x "\n") ;} \
+	do { printf("> %s\n", #x) ;} \
+	while(0)
 
-#define ERROR_PAR(x) \ 
-	do { fprintf(stderr , #x " failed: not enough parameters\n") ;} \
+#define ERROR_PAR(x) \
+	do { fprintf(stderr , "%s failed: not enough parameters\n", #x) ;} \
+	while(0)
 
 #define ERROR_FAIL(x) \
-	do { fprintf(srterr , #x " execution failed\n") ;} \
+	do { fprintf(stderr , "%s execution failed\n", #x) ;}  \
+	while(0)
 
 typedef enum { Insert, Add, Remove, Print, Exit, Other } knownCMD;
 
@@ -35,14 +38,16 @@ void runPnt(char** args , node* network) ;
 void runExt(char** args , node* network) ;
 
 int main() {
-	node* network = nullptr ;
+	node* network ;
+	network->data = NULL;
+	network->next = NULL;
 	char cmd[MAX_STR] ;
-	char* args[MAX_ARG] = nullptr;
+	char* args[MAX_ARG] ;
 
 
 
 	while (fgets(cmd, MAX_STR, stdin)) {
-		PRINT_CMD(runCMD) ;
+		PRINT_CMD(printf(cmd)) ;
 		knownCMD runCMD = parseCMD(cmd , args) ;
 		switch (runCMD) {
 			case Insert :
@@ -76,26 +81,26 @@ int main() {
 knownCMD parseCMD(char* cmd, char** args) {
 	char* x ;
 	char cut[] = " " ;
-	char cmdTable[MAX_CMD][MAX_STR] = {
+	char cmdTable[NUM_CMD][MAX_STR] = {
 		"Insert" , 
 		"Add" ,
 		"Remove" ,
 		"Print" , 
 		"Exit"
-	}
+	} ;
 	x = strtok(cmd , cut) ;
-	arg[0] = strtok(NULL , cut) ;
-	arg[1] = strtol(NULL , cut) ;
+	args[0] = strtok(NULL , cut) ;
+	args[1] = strtok(NULL , cut) ;
 
-	for (int i=0 ; i < MAX_CMD ; i++){
-		if (!strcmp(x, cmdTable[i])) return knownCMD[i];
+	for (int i=0 ; i < NUM_CMD ; i++){
+		if (!strcmp(x, cmdTable[i])) return i;
 	}
 	return Other ;
 }
 
 void runIns(char** args, node* network) {
 	Result result ;
-	if (network->data == nullptr && args[0] != NULL) 
+	if (network->data == NULL && args[0] != NULL) 
 		result = addToNetwork(network , args[0] , args[1]) ;	
 	if (args[0] == NULL || args[1] == NULL)
 		ERROR_PAR(INS_S) ;
