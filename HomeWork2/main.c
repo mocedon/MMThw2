@@ -34,8 +34,7 @@ typedef enum { Insert, Add, Remove, Print, Exit, Other } knownCMD;
 
 knownCMD parseCMD(char* cmd , char** args) ;
 
-void runIns(char** args , node* network) ;
-void runAdd(char** args , node* network) ;
+void runIns(char** args , node** network) ;
 void runAdd(char** args , node* network) ;
 void runRem(char** args , node* network) ;
 void runPnt(node* network) ;
@@ -43,6 +42,7 @@ void runExt(node* network) ;
 
 int main() {
 	node* network = NULL;
+	node* netPtr = &network ;
 	char cmd[MAX_STR] ;
 	char* args[MAX_ARG] ;
 
@@ -53,7 +53,7 @@ int main() {
 		knownCMD runCMD = parseCMD(cmd , args) ;
 		switch (runCMD) {
 			case Insert :
-				runIns(args , network) ;
+				runIns(args , netPtr) ;
 				break ;
 
 			case Add :
@@ -100,11 +100,11 @@ knownCMD parseCMD(char* cmd, char** args) {
 	return Other ;
 }
 
-void runIns(char** args, node* network) {
+void runIns(char** args, node** network) {
 	Result result ;
-	if (network == NULL && args[0] != NULL) {
-		node* netPtr = &network;
-		result = addToNetwork(netPtr , args[0] , args[1]) ;	
+	if (*network == NULL && args[0] != NULL) {
+		
+		result = addToNetwork(network , args[0] , args[1]) ;	
 		if (!result) ERROR_FAIL(INS_S);
 		return ;
 	}
