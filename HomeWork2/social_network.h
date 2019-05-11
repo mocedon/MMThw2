@@ -6,7 +6,7 @@
 #include "user.h"
 #include "defs.h"
 
-Result addToNetwork(node* network, char* new_user, char* inviter);
+Result addToNetwork(node** network, char* new_user, char* inviter);
 
 Result addRelationship(node* network, char* user1, char* user2);
 

@@ -10,21 +10,25 @@
 #define MAX_ARG 2
 #define NUM_CMD 5
 
-#define INS_S "Add To Network"
-#define ADD_S "Add Relationship"
-#define REM_S "Remove Relationship"
+#define INS_S Add To Network
+#define ADD_S Add Relationship
+#define REM_S Remove Relationship
 
-#define PRINT_CMD(x) \
-	do { printf("> %s\n", #x) ;} \
-	while(0)
+#define STR(x) #x
 
 #define ERROR_PAR(x) \
-	do { fprintf(stderr , "%s failed: not enough parameters\n", #x) ;} \
-	while(0)
+	do { \
+		fprintf(stderr , "%s failed: not enough parameters\n", STR(x)) ; \
+		return ; \
+	} \
+	while(0);
 
 #define ERROR_FAIL(x) \
-	do { fprintf(stderr , "%s execution failed\n", #x) ;}  \
-	while(0)
+	do { \
+		fprintf(stderr , "%s execution failed\n", STR(x)) ;	\
+		return ; \
+	}  \
+	while(0);
 
 typedef enum { Insert, Add, Remove, Print, Exit, Other } knownCMD;
 
@@ -34,20 +38,18 @@ void runIns(char** args , node* network) ;
 void runAdd(char** args , node* network) ;
 void runAdd(char** args , node* network) ;
 void runRem(char** args , node* network) ;
-void runPnt(char** args , node* network) ;
-void runExt(char** args , node* network) ;
+void runPnt(node* network) ;
+void runExt(node* network) ;
 
 int main() {
-	node* network ;
-	network->data = NULL;
-	network->next = NULL;
+	node* network = NULL;
 	char cmd[MAX_STR] ;
 	char* args[MAX_ARG] ;
 
 
 
 	while (fgets(cmd, MAX_STR, stdin)) {
-		PRINT_CMD(printf(cmd)) ;
+		printf("> %s\n" , cmd) ;
 		knownCMD runCMD = parseCMD(cmd , args) ;
 		switch (runCMD) {
 			case Insert :
@@ -63,11 +65,11 @@ int main() {
 				break ;
 
 			case Print :
-				runPnt(args , network) ;
+				runPnt(network) ;
 				break ;
 
 			case Exit :
-				runExt(args , network) ;
+				runExt(network) ;
 				return 0 ;
 				break ;
 
@@ -80,7 +82,7 @@ int main() {
 
 knownCMD parseCMD(char* cmd, char** args) {
 	char* x ;
-	char cut[] = " " ;
+	char cut[] = " \n" ;
 	char cmdTable[NUM_CMD][MAX_STR] = {
 		"Insert" , 
 		"Add" ,
@@ -100,8 +102,12 @@ knownCMD parseCMD(char* cmd, char** args) {
 
 void runIns(char** args, node* network) {
 	Result result ;
-	if (network->data == NULL && args[0] != NULL) 
-		result = addToNetwork(network , args[0] , args[1]) ;	
+	if (network == NULL && args[0] != NULL) {
+		node* netPtr = &network;
+		result = addToNetwork(netPtr , args[0] , args[1]) ;	
+		if (!result) ERROR_FAIL(INS_S);
+		return ;
+	}
 	if (args[0] == NULL || args[1] == NULL)
 		ERROR_PAR(INS_S) ;
 	result = addToNetwork(network, args[0], args[1]);
@@ -124,10 +130,10 @@ void runRem(char** args, node* network) {
 	if (!result) ERROR_FAIL(REM_S);
 }
 
-void runPnt(char** args, node* network) {
+void runPnt(node* network) {
 	printNetwork(network) ;
 }
 
-void runExt(char** args, node* network) {
+void runExt(node* network) {
 	deleteNetwork(network) ;
 }

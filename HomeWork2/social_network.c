@@ -4,39 +4,24 @@
 #include <string.h>
 #include "social_network.h"
 
-Result addToNetwork(node* network, char* new_user, char* inviter)
-{
-	if (searchUser(network, new_user) != NULL)
-	{
-		return FAILURE;
+Result addToNetwork(node** network, char* new_user, char* inviter){
+	if (*network == NULL) {
+		*network = (node*) malloc(sizeof(node)) ;
+		if (*network == NULL) return FAILURE ;
+		(*network)->data = createUser(new_user) ;
+		(*network)->next = NULL ;
+		return SUCCESS ;
 	}
-	user* u = createUser(new_user);
-	if (u == NULL)
-	{
-		return FAILURE;
+	if (searchUser(*network, new_user) == NULL) {
+		user* u = createUser(new_user) ;
+		node* n = (node*) malloc(sizeof(node)) ;
+		if (u == NULL || n == NULL) return FAILURE ;
+		n->data = u ;
+		n->next = (*network)->next ;
+		*network = n ;
+		return SUCCESS ;
 	}
-	node* n = pushItem(network, u);
-	if (n == NULL)
-	{
-		deleteUser(u);
-		return FAILURE;
-	}
-	if (inviter == NULL)
-	{
-		network = n;
-		return SUCCESS;
-	}
-	user* inv = searchUser(network, inviter);
-	if (inv == NULL)
-	{
-		deleteUser(u);
-		free(n);
-		return FAILURE;
-	}
-	network = n;
-	addFriend(u, inviter);
-	addFriend(inv, new_user);
-	return SUCCESS;
+	else return FAILURE ;
 }
 
 Result addRelationship(node* network, char* user1, char* user2)
@@ -77,7 +62,7 @@ Result removeRelationship(node* network, char* user1, char* user2)
 
 user* searchUser(node* network, char* username)
 {
-	if(network == NULL){
+	if(network->data == NULL){
 		return NULL;
 	}
 	
@@ -106,4 +91,6 @@ void deleteNetwork(node* network)
 	}
 	deleteNetwork(network->next);
 	deleteUser((user*)network->data);
+	free(network) ;
+
 }
