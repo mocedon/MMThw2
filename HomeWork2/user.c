@@ -14,7 +14,9 @@ user* createUser(char* newName)
 	{
 		return NULL;
 	}
-	u->name = newName;
+	u->name = (char*) malloc(sizeof(char*));
+	if (u->name == NULL) return NULL ;
+	strcpy(u->name , newName) ;
 	u->friend_list = NULL;
 	u->friend_num = 0;
 	return u;
@@ -22,24 +24,25 @@ user* createUser(char* newName)
 
 void deleteUser(user* self) {
 	cleanList(self->friend_list);
+	free(self->name) ;
 	free(self);
 }
 
 Result addFriend(user* self, char* add)
 {
 	node* listItem;
-	for (listItem = getFriendList(self); listItem != NULL; listItem->next)
+	for (listItem = getFriendList(self); listItem != NULL; listItem = listItem->next)
 	{
 		if (strcmp((char*)listItem->data, add) == 0)
 		{
 			return FAILURE;
 		}
 	}
-	node* newNode = pushItem(getFriendList(self), add);
-	if (newNode == NULL)
-	{
-		return FAILURE;
-	}
+	char* name = (char*) malloc(sizeof(char*)) ;
+	if (name == NULL) return FAILURE ;
+	strcpy(name , add) ;
+	node* newNode = pushItem(getFriendList(self), name);
+	if (newNode == NULL) return FAILURE;
 	self->friend_list = newNode;
 	self->friend_num++;
 	return SUCCESS;
@@ -84,7 +87,7 @@ int getFriendNum(user* self)
 void printUser(user* self)
 {
 	if (self == NULL) return ;
-	printf("User's name: %s\n", getName(self));
+	printf("User's name: %s at adrress %p\n", getName(self) , (void*)self);
 	int num = getFriendNum(self);
 	node* listItem = getFriendList(self);
 	printf("The user has %d friends:\n", num);
@@ -108,16 +111,15 @@ void cleanList(node* self)
 		return;
 	}
 	cleanList(self->next);
+	free(self->data) ;
 	free(self);
 }
 
 node* pushItem(node* head , void* item)
 {
 	node* newNode = (node*)malloc(sizeof(node));
-	if (newNode == NULL)
-	{
-		return NULL;
-	}
+	if (newNode == NULL) return NULL;
+	
 	newNode->data = item;
 	newNode->next = head;
 	return newNode;

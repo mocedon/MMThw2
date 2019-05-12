@@ -42,7 +42,7 @@ void runExt(node* network) ;
 
 int main() {
 	node* network = NULL;
-	node* netPtr = &network ;
+	node** netPtr = &network ;
 	char cmd[MAX_STR] ;
 	char* args[MAX_ARG] ;
 
@@ -93,7 +93,7 @@ knownCMD parseCMD(char* cmd, char** args) {
 	x = strtok(cmd , cut) ;
 	args[0] = strtok(NULL , cut) ;
 	args[1] = strtok(NULL , cut) ;
-
+	if (x == NULL) return Other ;
 	for (int i=0 ; i < NUM_CMD ; i++){
 		if (!strcmp(x, cmdTable[i])) return i;
 	}

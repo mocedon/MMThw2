@@ -8,18 +8,18 @@ Result addToNetwork(node** network, char* new_user, char* inviter){
 	if (*network == NULL) {
 		*network = (node*) malloc(sizeof(node)) ;
 		if (*network == NULL) return FAILURE ;
-		(*network)->data = createUser(new_user) ;
+		(user*) (*network)->data = createUser(new_user) ;
 		(*network)->next = NULL ;
 		return SUCCESS ;
 	}
-	if (searchUser(*network, new_user) == NULL) {
+	if (searchUser(*network, new_user) == NULL && searchUser(*network , inviter) != NULL) {
 		user* u = createUser(new_user) ;
 		node* n = (node*) malloc(sizeof(node)) ;
 		if (u == NULL || n == NULL) return FAILURE ;
-		n->data = u ;
-		n->next = (*network)->next ;
+		(user*)n->data = u ;
+		n->next = *network ;
 		*network = n ;
-		return SUCCESS ;
+		return addRelationship(*network , new_user , inviter) ;
 	}
 	else return FAILURE ;
 }
@@ -36,8 +36,8 @@ Result addRelationship(node* network, char* user1, char* user2)
 	{
 		return FAILURE;
 	}
-	addFriend(u2, user1);
-	return SUCCESS;
+	
+	return addFriend(u2, user1);;
 }
 
 Result removeRelationship(node* network, char* user1, char* user2)
@@ -62,9 +62,9 @@ Result removeRelationship(node* network, char* user1, char* user2)
 
 user* searchUser(node* network, char* username)
 {
-	if(network->data == NULL){
-		return NULL;
-	}
+	if (network == NULL) return NULL ;
+	if (network->data == NULL) return NULL;
+	
 	
 	if (strcmp(username, getName((user*)network->data)) == 0){
 		return (user*)network->data ;
