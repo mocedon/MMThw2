@@ -40,15 +40,15 @@ void runRem(char** args , node* network) ;
 void runPnt(node* network) ;
 void runExt(node* network) ;
 
-int main() {
+int main()
+{
 	node* network = NULL;
 	node** netPtr = &network ;
 	char cmd[MAX_STR] ;
 	char* args[MAX_ARG] ;
 
-
-
-	while (fgets(cmd, MAX_STR, stdin)) {
+	while (fgets(cmd, MAX_STR, stdin))
+	{
 		printf("> %s\n" , cmd) ;
 		knownCMD runCMD = parseCMD(cmd , args) ;
 		switch (runCMD) {
@@ -80,7 +80,8 @@ int main() {
 	}
 }
 
-knownCMD parseCMD(char* cmd, char** args) {
+knownCMD parseCMD(char* cmd, char** args)
+{
 	char* x ;
 	char cut[] = " \n" ;
 	char cmdTable[NUM_CMD][MAX_STR] = {
@@ -94,16 +95,18 @@ knownCMD parseCMD(char* cmd, char** args) {
 	args[0] = strtok(NULL , cut) ;
 	args[1] = strtok(NULL , cut) ;
 	if (x == NULL) return Other ;
-	for (int i=0 ; i < NUM_CMD ; i++){
+	for (int i=0 ; i < NUM_CMD ; i++)
+	{
 		if (!strcmp(x, cmdTable[i])) return i;
 	}
 	return Other ;
 }
 
-void runIns(char** args, node** network) {
+void runIns(char** args, node** network)
+{
 	Result result ;
-	if (*network == NULL && args[0] != NULL) {
-		
+	if (*network == NULL && args[0] != NULL)
+	{
 		result = addToNetwork(network , args[0] , args[1]) ;	
 		if (!result) ERROR_FAIL(INS_S);
 		return ;
@@ -114,26 +117,40 @@ void runIns(char** args, node** network) {
 	if (!result) ERROR_FAIL(INS_S) ;
 }
 
-void runAdd(char** args, node* network) {
+void runAdd(char** args, node* network)
+{
 	Result result ;
 	if (args[0] == NULL || args[1] == NULL)
+	{
 		ERROR_PAR(ADD_S);
+	}
 	result = addRelationship(network , args[0] , args[1]) ;
-	if (!result) ERROR_FAIL(ADD_S) ;
+	if (!result)
+	{
+		ERROR_FAIL(ADD_S);
+	}
 }
 
-void runRem(char** args, node* network) {
+void runRem(char** args, node* network)
+{
 	Result result;
 	if (args[0] == NULL || args[1] == NULL)
+	{
 		ERROR_PAR(REM_S);
+	}
 	result = removeRelationship(network, args[0], args[1]);
-	if (!result) ERROR_FAIL(REM_S);
+	if (!result)
+	{
+		ERROR_FAIL(REM_S);
+	}
 }
 
-void runPnt(node* network) {
+void runPnt(node* network)
+{
 	printNetwork(network) ;
 }
 
-void runExt(node* network) {
+void runExt(node* network)
+{
 	deleteNetwork(network) ;
 }

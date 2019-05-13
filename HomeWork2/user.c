@@ -2,7 +2,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <stdbool.h>
 #include "user.h"
 #include "defs.h"
 
@@ -14,9 +13,13 @@ user* createUser(char* newName)
 	{
 		return NULL;
 	}
-	u->name = (char*) malloc(sizeof(char*));
-	if (u->name == NULL) return NULL ;
-	strcpy(u->name , newName) ;
+	u->name = (char*) malloc((strlen(newName)+1)*sizeof(char));
+	if (u->name == NULL)
+	{
+		free(u);
+		return NULL;
+	}
+	strcpy(u->name, newName) ;
 	u->friend_list = NULL;
 	u->friend_num = 0;
 	return u;
@@ -31,18 +34,25 @@ void deleteUser(user* self) {
 Result addFriend(user* self, char* add)
 {
 	node* listItem;
-	for (listItem = getFriendList(self); listItem != NULL; listItem = listItem->next)
+	for (listItem = self->friend_list; listItem != NULL; listItem = listItem->next)
 	{
 		if (strcmp((char*)listItem->data, add) == 0)
 		{
 			return FAILURE;
 		}
 	}
-	char* name = (char*) malloc(sizeof(char*)) ;
-	if (name == NULL) return FAILURE ;
-	strcpy(name , add) ;
+	char* name = (char*) malloc((strlen(add)+1)*sizeof(char));
+	if (name == NULL)
+	{
+		return FAILURE;
+	}
+	strcpy(name, add);
 	node* newNode = pushItem(getFriendList(self), name);
-	if (newNode == NULL) return FAILURE;
+	if (newNode == NULL)
+	{
+		free(name);
+		return FAILURE;
+	}
 	self->friend_list = newNode;
 	self->friend_num++;
 	return SUCCESS;
@@ -50,15 +60,17 @@ Result addFriend(user* self, char* add)
 
 Result removeFriend(user* self, char* remove)
 {
-	node* listItem = getFriendList(self);
+	node* listItem = self->friend_list;
 	if (strcmp((char*)listItem->data, remove) == 0)
 	{
 		self->friend_list = listItem->next;
 		free(listItem);
+		return SUCCESS;
 	}
 	for (node* nextItem = listItem->next; nextItem != NULL; nextItem = nextItem->next)
 	{
-		if (strcmp((char*)nextItem->data, remove) == 0) {
+		if (strcmp((char*)nextItem->data, remove) == 0)
+		{
 			listItem->next = nextItem->next;
 			free(nextItem);
 			self->friend_num--;
@@ -98,12 +110,6 @@ void printUser(user* self)
 	}
 }
 
-bool nodeDataMatch(node* n1, node* n2)
-{
-	if (!strcmp((char*)n1->data, (char*)n2->data)) return true;
-	else return false;
-}
-
 void cleanList(node* self)
 {// Recursively frees up the momery from list
 	if (self == NULL)
@@ -118,8 +124,10 @@ void cleanList(node* self)
 node* pushItem(node* head , void* item)
 {
 	node* newNode = (node*)malloc(sizeof(node));
-	if (newNode == NULL) return NULL;
-	
+	if (newNode == NULL)
+	{
+		return NULL;
+	}
 	newNode->data = item;
 	newNode->next = head;
 	return newNode;
