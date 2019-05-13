@@ -1,1 +1,23 @@
-#Bash file read_file implementation
+#!/bin/bash
+
+if [[$# -lt 1]]; then
+	exit 1
+fi
+
+file="$1"
+max_grade=0 
+id
+while read line ; do
+	line=($line)
+	if [[${#line[*]} -lt 2]]; then
+		exit 1
+	fi
+	tmp_id=${line[0]}
+	tmp_grd=${line[1]}
+	if [[$tmp_grd -gt $max_grade]]; then
+		max_grade=$tmp_grd
+		id=$tmp_id
+	fi
+done < "$file"
+
+echo "`basename $file` $max_grade $id"

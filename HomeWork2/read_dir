@@ -1,1 +1,20 @@
-#Bash file read_dir implementation
+#!/bin/bash
+
+if [[$3 -lt 1]]; then
+	exit 1
+fi
+
+
+dir="$1"
+ls_dir=(`basename -a *`)
+
+for item in "ls_dir"; do
+	abs_path="$dir/$item" 
+	if [[-d "$abs_path"]]; then
+		read_dir "$abs_path"
+	fi
+	
+	if [[-f "$abs_path"]]; then
+		read_file "$abs_path"
+	fi
+done
