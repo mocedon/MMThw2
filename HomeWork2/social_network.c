@@ -109,7 +109,7 @@ void printNetwork(node* network)
 	{
 		return;
 	}
-	printf("The social network contains the users:/n")
+	printf("The social network contains the users:/n");
 	printUser((user*)network->data);
 	printf("\n");
 	printNetwork(network->next);
