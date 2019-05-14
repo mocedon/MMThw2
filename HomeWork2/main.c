@@ -91,11 +91,12 @@ knownCMD parseCMD(char* cmd, char** args)
 		"Print" , 
 		"Exit"
 	} ;
-	x = strtok(cmd , cut) ;
-	args[0] = strtok(NULL , cut) ;
-	args[1] = strtok(NULL , cut) ;
-	if (x == NULL) return Other ;
-	for (int i=0 ; i < NUM_CMD ; i++)
+	x = strtok(cmd , cut);
+	args[0] = strtok(NULL, cut);
+	args[1] = strtok(NULL, cut);
+	if (x == NULL) return Other;
+	int i;
+	for (i = 0; i < NUM_CMD; i++)
 	{
 		if (!strcmp(x, cmdTable[i])) return i;
 	}

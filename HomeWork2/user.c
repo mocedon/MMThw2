@@ -67,7 +67,8 @@ Result removeFriend(user* self, char* remove)
 		free(listItem);
 		return SUCCESS;
 	}
-	for (node* nextItem = listItem->next; nextItem != NULL; nextItem = nextItem->next)
+	node* nextItem;
+	for (nextItem = listItem->next; nextItem != NULL; nextItem = nextItem->next)
 	{
 		if (strcmp((char*)nextItem->data, remove) == 0)
 		{
@@ -103,7 +104,9 @@ void printUser(user* self)
 	int num = getFriendNum(self);
 	node* listItem = getFriendList(self);
 	printf("The user has %d friends:\n", num);
-	for (int i = 0; i < num; i++) {
+	int i;
+	for (i = 0; i < num; i++)
+	{
 		char* name = (char*)listItem->data;
 		printf("%s\n", name);
 		listItem = listItem->next;
