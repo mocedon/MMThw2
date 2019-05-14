@@ -83,7 +83,7 @@ int main()
 knownCMD parseCMD(char* cmd, char** args)
 {
 	char* x ;
-	char cut[] = " \n" ;
+	char cut[] = " \t\n" ;
 	char cmdTable[NUM_CMD][MAX_STR] = {
 		"Insert" , 
 		"Add" ,
@@ -113,9 +113,14 @@ void runIns(char** args, node** network)
 		return ;
 	}
 	if (args[0] == NULL || args[1] == NULL)
-		ERROR_PAR(INS_S) ;
+	{
+		ERROR_PAR(INS_S);
+	}
 	result = addToNetwork(network, args[0], args[1]);
-	if (!result) ERROR_FAIL(INS_S) ;
+	if (!result)
+	{
+		ERROR_FAIL(INS_S);
+	}
 }
 
 void runAdd(char** args, node* network)
