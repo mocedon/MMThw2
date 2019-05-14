@@ -144,7 +144,8 @@ void runRem(char** args, node* network)
 
 void runPnt(node* network)
 {
-	printNetwork(network) ;
+	printf("The social network contains the users:/n");
+	printNetwork(network);
 }
 
 void runExt(node* network)
