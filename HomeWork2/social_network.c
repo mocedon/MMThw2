@@ -13,12 +13,13 @@ Result addToNetwork(node** network, char* new_user, char* inviter)
 		{
 			return FAILURE;
 		}
-		(*network)->data = createUser(new_user);
-		if ((*network)->data = NULL)
+		user* u = createUser(new_user);
+		if (u == NULL)
 		{
-			deleteUser((user*)(*network)->data);
+			deleteUser(u);
 			return FAILURE;
 		}
+		(*network)->data = u;
 		(*network)->next = NULL;
 		return SUCCESS ;
 	}

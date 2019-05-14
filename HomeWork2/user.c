@@ -25,7 +25,12 @@ user* createUser(char* newName)
 	return u;
 }
 
-void deleteUser(user* self) {
+void deleteUser(user* self)
+{
+	if (self == NULL)
+	{
+		return;
+	}
 	cleanList(self->friend_list);
 	free(self->name) ;
 	free(self);
@@ -100,7 +105,7 @@ int getFriendNum(user* self)
 void printUser(user* self)
 {
 	if (self == NULL) return ;
-	printf("User's name: %s at adrress %p\n", getName(self) , (void*)self);
+	printf("User's name: %s\n", getName(self));
 	int num = getFriendNum(self);
 	node* listItem = getFriendList(self);
 	printf("The user has %d friends:\n", num);
