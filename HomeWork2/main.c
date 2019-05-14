@@ -10,7 +10,7 @@
 #define MAX_ARG 2
 #define NUM_CMD 5
 
-#define INS_S Add To Network
+#define INS_S Insert
 #define ADD_S Add Relationship
 #define REM_S Remove Relationship
 
