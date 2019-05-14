@@ -16,7 +16,7 @@ Result addToNetwork(node** network, char* new_user, char* inviter)
 		(*network)->data = createUser(new_user);
 		if ((*network)->data = NULL)
 		{
-			deleteUser(*network);
+			deleteUser((user*)(*network)->data);
 			return FAILURE;
 		}
 		(*network)->next = NULL;
