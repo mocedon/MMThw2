@@ -49,7 +49,6 @@ int main()
 
 	while (fgets(cmd, MAX_STR, stdin))
 	{
-		printf("> %s\n" , cmd) ;
 		knownCMD runCMD = parseCMD(cmd , args) ;
 		switch (runCMD) {
 			case Insert :

@@ -108,7 +108,14 @@ void printUser(user* self)
 	printf("User's name: %s\n", getName(self));
 	int num = getFriendNum(self);
 	node* listItem;
-	printf("The user has %d friends:\n", num);
+	char fr[] = "friend";
+	char frs[] = "friends";
+	char* f = frs;
+	if (num == 1)
+	{
+		f = fr;
+	}
+	printf("The user has %d %s:\n", num, f);
 	for (listItem = getFriendList(self); listItem != NULL; listItem = listItem->next)
 	{
 		char* name = (char*)listItem->data;
