@@ -73,7 +73,7 @@ int main()
 				break ;
 
 			case Other :
-				printf("Command not found\n") ;
+				fprintf(stderr, "Command not found\n");
 				break ;
 		}
 	}
