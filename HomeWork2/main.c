@@ -105,19 +105,11 @@ knownCMD parseCMD(char* cmd, char** args)
 
 void runIns(char** args, node** network)
 {
-	Result result ;
-	if (*network == NULL && args[0] != NULL)
-	{
-		result = addToNetwork(network , args[0] , args[1]) ;	
-		if (!result) ERROR_FAIL(INS_S);
-		return ;
-	}
-	if (args[0] == NULL || args[1] == NULL)
+	if (args[0] == NULL || (*network != NULL && args[1] == NULL))
 	{
 		ERROR_PAR(INS_S);
 	}
-	result = addToNetwork(network, args[0], args[1]);
-	if (!result)
+	if (addToNetwork(network, args[0], args[1]) == FAILURE)
 	{
 		ERROR_FAIL(INS_S);
 	}
